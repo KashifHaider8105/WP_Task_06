@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Library Management System</title>
+    <style>
+        h1 {
+            padding-left: 10px;
+        }
+
+        .border {
+            border: 0.5px solid grey;
+            width: 1000px;
+            margin: 30px;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #right1 {
+            border-right: 1px solid gray;
+        }
+
+        #right2 {
+            border-right: 1px solid gray;
+        }
+
+        .newbook {
+            margin: 10px;
+        }
+
+        #hello1 {
+            background-color: blue;
+            color: azure;
+           font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+           font-size: medium;
+            border-radius: 20%;
+        }
+
+        .container {
+            display: inline-block;
+            margin: 10px;
+            vertical-align: top;
+            height: 300px;
+            width: 300px;
+        }
+
+        #hello2 {
+            margin: 10px;
+            background-color: blue;
+            color: azure;
+            padding: 5px;
+           font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+           font-size: medium;
+           border-radius: 20%;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 100%; 
+            }
+        }
+
+        @media (max-width: 920px) {
+            .container {
+                width: 100%; 
+            }
+        }
+    </style>
+</head>
+
+<body>
+<header>
+</header>
+<div class="border">
+    <h1>OLMS</h1>
+
+    <div class="container" id="right1">
+        <h2>Book List</h2>
+        <ul id="book-list">
+            
+        </ul>
+    </div>
+
+    <div class="container" id="right2">
+        <h2>Add New Book</h2>
+        <form id="add-book-form">
+            <div class="newbook">
+                <input type="text" placeholder="Title" name="title" id="title">
+            </div>
+            <div class="newbook">
+                <input type="text" placeholder="Author" name="author" id="author">
+            </div>
+            <div class="newbook">
+                <input type="text" placeholder="ISBN" name="isbn" id="isbn">
+            </div>
+            <button id="hello1" class="hover-button" type="submit">Add Book</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <div>
+            <h2>Search for Books</h2>
+            <input type="text" id="search" placeholder="Search...">
+        </div>
+        <button class="hover-button" id="hello2" onclick="searchBooks()">Search</button>
+        <ul id="search-results">
+            
+        </ul>
+    </div>
+</div>
+
+<script>
+    const bookList = document.getElementById('book-list');
+    const addBookForm = document.getElementById('add-book-form');
+    const searchInput = document.getElementById('search');
+    const searchResults = document.getElementById('search-results');
+
+    
+    const books = [
+        { title: "Hacking: The Art of Exploitation", author: "Jon Erickson", isbn: "978-1593271442" },
+        { title: "Introduction to the Theory of Computation", author: "Michael Sipser", isbn: "978-1133187790" },
+        { title: "Eloquent JavaScript: A Modern Introduction to Programming", author: "Marijn Haverbeke", isbn: "978-1593279509" }
+    ];
+
+    
+    displayBooks(books, bookList);
+
+    
+    addBookForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const title = document.getElementById('title').value;
+        const author = document.getElementById('author').value;
+        const isbn = document.getElementById('isbn').value;
+
+        if (title && author && isbn) {
+            const newBook = { title, author, isbn };
+            books.push(newBook);
+            displayBooks(books, bookList);
+            clearFormInputs();
+        }
+    });
+
+    
+    function searchBooks() {
+        const query = searchInput.value.toLowerCase();
+        const results = books.filter(book =>
+            book.title.toLowerCase().includes(query) ||
+            book.author.toLowerCase().includes(query) ||
+            book.isbn.toLowerCase().includes(query)
+        );
+        displayBooks(results, searchResults);
+    }
+
+    
+    function displayBooks(books, targetElement) {
+        targetElement.innerHTML = '';
+        books.forEach(book => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${book.title} by ${book.author} ISBN: ${book.isbn}`;
+            targetElement.appendChild(listItem);
+        });
+    }
+
+    
+    function clearFormInputs() {
+        document.getElementById('title').value = '';
+        document.getElementById('author').value = '';
+        document.getElementById('isbn').value = '';
+    }
+</script>
+</body>
+</html>
